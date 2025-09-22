@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Tu Regalo</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #FFD700;
+  }
+
+  h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  #buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  button {
+    padding: 15px 40px;
+    font-size: 1.3em;
+    background: #FFD700;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #ffea70;
+    transform: scale(1.05);
+  }
+
+  #musicBtn {
+    padding: 10px;
+    font-size: 1.5em;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: yellow;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(255,255,0,0.7);
+    transition: 0.3s;
+  }
+
+  #musicBtn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(255,255,0,1);
+  }
+
+  canvas {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+  }
+
+  #container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div id="container">
+  <h1>✨ Tu Regalo Mi Niña ✨<br>💛 Feliz Día 💛</h1>
+  <div id="buttons">
+    <button id="abrirBtn">Abrir Regalo</button>
+    <button id="musicBtn">🎵</button>
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="tiroteo.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // ==== Fondo de estrellas ====
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let stars = [];
+  for(let i=0;i<150;i++){
+    stars.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*1.5,
+      s: Math.random()*0.5 + 0.2
+    });
+  }
+
+  function drawStars() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    stars.forEach(s => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, 2*Math.PI);
+      ctx.fill();
+      s.y += s.s;
+      if(s.y > canvas.height) { s.y = 0; s.x = Math.random()*canvas.width; }
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // ==== Botón abrir regalo ====
+  document.getElementById("abrirBtn").addEventListener("click", ()=>{
+    window.location.href="ramo.html"; // Cambia al nombre de tu archivo de ramo
+  });
+
+  // ==== Botón música ====
+  const musicBtn = document.getElementById("musicBtn");
+  const bgMusic = document.getElementById("bgMusic");
+
+  musicBtn.addEventListener('click', () => {
+    if(bgMusic.paused){
+      bgMusic.play();
+    } else {
+      bgMusic.pause();
+    }
+  });
+</script>
+</body>
+</html>
